@@ -4,6 +4,8 @@ Jarvis AI is a custom Alexa skill that runs on any Alexa-enabled device, includi
 
 This README is a standalone runbook for deploying the solution. It does not assume you have read anything else in this repository.
 
+To get a deeper insight into this solution, please refer to this blogpost https://nivleshc.wordpress.com/2026/09/19/building-jarvis-ai-a-custom-alexa-skill-powered-by-amazon-bedrock-and-agentcore-part-1/
+
 ## What gets deployed
 
 - An AWS Lambda function running the full Alexa request pipeline (skill authentication, a per-user allowlist, rate limiting, and routing)
