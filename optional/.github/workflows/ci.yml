@@ -1,0 +1,151 @@
+# ============================================================
+# CI pipeline -- validation only, no deployment.
+#
+# Scope, deliberately: this workflow lints and tests the Lambda
+# code and operational scripts, and validates the Terraform
+# configuration's syntax/formatting. It does NOT run `terraform
+# apply` and does NOT deploy the Alexa skill.
+# Actual deployment is a manual, deliberate act you run yourself
+# from your own machine, following README.md -- this project's
+# skill-creation script (scripts/deploy_skill.py) requires SMAPI
+# credentials (LWA client id/secret/refresh token, vendor id) that
+# are personal to your Amazon developer account and deliberately
+# never belong in CI secrets for a personal project like this one.
+#
+# If you later want this to auto-deploy on merge to main, the
+# missing piece is: store AWS credentials + the 4 ASK_* secrets in
+# GitHub Actions repo secrets, then add a `deploy` job gated on
+# `github.ref == 'refs/heads/main'` that runs the same two-apply
+# sequence README.md walks through by hand. That is an explicit
+# choice to make later, not something this workflow does silently.
+# ============================================================
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "13-Alexa Skill Amazon Bedrock Agentcore/echo-show-bedrock-agentcore/**"
+  pull_request:
+    paths:
+      - "13-Alexa Skill Amazon Bedrock Agentcore/echo-show-bedrock-agentcore/**"
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 13-Alexa Skill Amazon Bedrock Agentcore/echo-show-bedrock-agentcore
+
+env:
+  PYTHON_VERSION: "3.12"
+  TF_VERSION: "1.9.0"
+
+jobs:
+  # ------------------------------------------------------------
+  # Lint: ruff over the Lambda code and operational scripts.
+  # ------------------------------------------------------------
+  lint:
+    name: Lint Python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install ruff
+        run: pip install ruff==0.14.0 --quiet
+
+      - name: Run ruff on alexa_lambda/
+        run: ruff check alexa_lambda/ --output-format=github
+
+      - name: Run ruff on scripts/
+        run: ruff check scripts/ --output-format=github
+
+      - name: Run ruff on lambda_tasks/
+        run: ruff check lambda_tasks/ --output-format=github
+
+      - name: Run ruff on agents/boredom_buster_agent/
+        run: ruff check agents/boredom_buster_agent/ --output-format=github
+
+  # ------------------------------------------------------------
+  # Test: full pytest suite (mocked AWS via moto, no real
+  # AWS credentials needed or used).
+  # ------------------------------------------------------------
+  test:
+    name: pytest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install runtime + dev dependencies
+        run: |
+          pip install -r alexa_lambda/requirements.txt --quiet
+          pip install -r alexa_lambda/requirements-dev.txt --quiet
+          pip install -r agents/boredom_buster_agent/requirements.txt --quiet
+
+      - name: Run pytest (alexa_lambda/tests + scripts/tests + lambda_tasks/get_weather/tests + agents/boredom_buster_agent/tests, per pytest.ini)
+        run: pytest -v
+
+  # ------------------------------------------------------------
+  # Terraform: format + validate only. No init against a real
+  # backend, no plan, no apply -- this job never touches AWS.
+  # ------------------------------------------------------------
+  terraform-validate:
+    name: Terraform fmt/validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform fmt check
+        working-directory: 13-Alexa Skill Amazon Bedrock Agentcore/echo-show-bedrock-agentcore/terraform
+        run: terraform fmt -check -recursive
+
+      - name: Terraform init (no backend, no credentials)
+        working-directory: 13-Alexa Skill Amazon Bedrock Agentcore/echo-show-bedrock-agentcore/terraform
+        run: terraform init -backend=false -input=false
+
+      - name: Terraform validate
+        working-directory: 13-Alexa Skill Amazon Bedrock Agentcore/echo-show-bedrock-agentcore/terraform
+        # alert_email has no default (required var) -- a placeholder is
+        # supplied here only so `validate` can run; this is a syntax/
+        # type check, not a plan against real infrastructure.
+        env:
+          TF_VAR_alert_email: "ci-placeholder@example.com"
+        run: terraform validate
+
+  # ------------------------------------------------------------
+  # Script dry-runs: confirm approve_user.py and usage_report.py
+  # are importable and their --help output works as standalone
+  # CLI entry points, on every push.
+  # ------------------------------------------------------------
+  script-dry-run:
+    name: Script --help dry-run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install runtime dependencies
+        run: pip install -r alexa_lambda/requirements.txt --quiet
+
+      - name: approve_user.py --help
+        run: python3 scripts/approve_user.py --help
+
+      - name: usage_report.py --help
+        run: python3 scripts/usage_report.py --help
+
+      - name: deploy_skill.py --help
+        run: python3 scripts/deploy_skill.py --help

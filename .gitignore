@@ -216,3 +216,28 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local CI (Makefile) artifacts -- never commit these.
+.venv-ci/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Lambda packaging build output (terraform/lambda_build/, created by
+# the archive_file data source in lambda.tf)
+terraform/lambda_build/
+
+# AgentCore Runtime agent packaging build output (terraform/agent_build/,
+# created by scripts/build_agentcore_package.py via agentcore_runtime.tf's
+# null_resource local-exec step)
+terraform/agent_build/
+
+# Terraform variables file -- contains alert_email and, once set,
+# alexa_skill_id. Not a secret exactly, but environment-specific and
+# not meant to be committed -- see README.md.
+terraform/terraform.tfvars
+
+.terraform/
+*.tfstate
+

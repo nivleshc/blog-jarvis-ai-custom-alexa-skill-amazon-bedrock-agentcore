@@ -1,0 +1,321 @@
+{
+    "interactionModel": {
+      "languageModel": {
+        "invocationName": "jarvis ai",
+        "intents": [
+          {
+            "name": "AMAZON.CancelIntent",
+            "samples": []
+          },
+          {
+            "name": "AMAZON.HelpIntent",
+            "samples": []
+          },
+          {
+            "name": "AMAZON.StopIntent",
+            "samples": []
+          },
+          {
+            "name": "AMAZON.NavigateHomeIntent",
+            "samples": []
+          },
+          {
+            "name": "AMAZON.FallbackIntent",
+            "samples": []
+          },
+          {
+            "name": "SmartAssistantIntent",
+            "slots": [
+              {
+                "name": "Query",
+                "type": "AMAZON.SearchQuery"
+              }
+            ],
+            "samples": [
+              "smart assistant",
+              "help me with {Query}",
+              "I have a question about {Query}",
+              "I need help with {Query}",
+              "ask me {Query}",
+              "tell me about {Query}",
+              "what is {Query}",
+              "what's {Query}",
+              "who is {Query}",
+              "how do I {Query}",
+              "why is {Query}",
+              "explain {Query}",
+              "can you help me with {Query}"
+            ]
+          },
+          {
+            "name": "GetWeatherIntent",
+            "slots": [
+              {
+                "name": "Location",
+                "type": "AMAZON.City",
+                "samples": [
+                  "{Location}",
+                  "in {Location}",
+                  "for {Location}"
+                ]
+              }
+            ],
+            "samples": [
+              "what's the weather",
+              "check the weather",
+              "get the weather",
+              "check weather",
+              "what's the weather in {Location}",
+              "get the weather for {Location}",
+              "weather in {Location}"
+            ]
+          },
+          {
+            "name": "BoredomBusterIntent",
+            "slots": [
+              {
+                "name": "MediaType",
+                "type": "MediaType"
+              },
+              {
+                "name": "MoodOrGenre",
+                "type": "AMAZON.SearchQuery",
+                "samples": [
+                  "{MoodOrGenre}",
+                  "something {MoodOrGenre}",
+                  "a {MoodOrGenre} one",
+                  "I'm in the mood for something {MoodOrGenre}"
+                ]
+              }
+            ],
+            "samples": [
+              "I'm bored",
+              "I am bored",
+              "help me find something to watch",
+              "find me something to watch",
+              "what should I watch",
+              "recommend a {MediaType}",
+              "suggest a {MediaType}",
+              "find me a {MediaType}",
+              "recommend a good {MediaType}",
+              "suggest a good {MediaType}",
+              "I want to watch a {MediaType}",
+              "suggest something {MoodOrGenre}",
+              "recommend something {MoodOrGenre}",
+              "find me something {MoodOrGenre}",
+              "I want to watch something {MoodOrGenre}",
+              "find me a {MoodOrGenre} movie",
+              "find me a {MoodOrGenre} show",
+              "recommend a {MoodOrGenre} movie",
+              "recommend a {MoodOrGenre} tv show",
+              "{MediaType} ideas",
+              "{MediaType} idea",
+              "give me {MediaType} ideas"
+            ]
+          },
+          {
+            "name": "ViewWatchlistIntent",
+            "slots": [],
+            "samples": [
+              "show my watchlist",
+              "what's on my watchlist",
+              "open my watchlist",
+              "my watchlist",
+              "view my watchlist",
+              "show me my watchlist"
+            ]
+          },
+          {
+            "name": "ReturnToMainMenuIntent",
+            "slots": [],
+            "samples": [
+              "return to main menu",
+              "go to main menu",
+              "main menu",
+              "go home",
+              "back to main",
+              "start over",
+              "go back to start"
+            ]
+          },
+          {
+            "name": "ReturnToPreviousScreenIntent",
+            "slots": [],
+            "samples": [
+              "return",
+              "return to jarvis ai",
+              "back",
+              "back to jarvis ai",
+              "go back to jarvis",
+              "return to jarvis",
+              "come back",
+              "take me back"
+            ]
+          },
+          {
+            "name": "DetailScreenActionIntent",
+            "slots": [
+              {
+                "name": "Action",
+                "type": "DetailScreenAction"
+              }
+            ],
+            "samples": [
+              "{Action}",
+              "please {Action}"
+            ]
+          }
+        ],
+      "types": [
+        {
+          "name": "MediaType",
+          "values": [
+            {
+              "id": "MOVIE",
+              "name": {
+                "value": "movie",
+                "synonyms": [
+                  "movies",
+                  "film",
+                  "films",
+                  "flick",
+                  "flicks"
+                ]
+              }
+            },
+            {
+              "id": "TV",
+              "name": {
+                "value": "tv",
+                "synonyms": [
+                  "tv shows",
+                  "tv",
+                  "tv series",
+                  "series",
+                  "show",
+                  "shows",
+                  "television show",
+                  "television series",
+                  "box set"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DetailScreenAction",
+          "values": [
+            {
+              "id": "ADD_TO_WATCHLIST",
+              "name": {
+                "value": "add to watchlist",
+                "synonyms": [
+                  "add this to watchlist",
+                  "add it to watchlist",
+                  "save to watchlist",
+                  "save this to watchlist",
+                  "put on watchlist"
+                ]
+              }
+            },
+            {
+              "id": "GO_BACK",
+              "name": {
+                "value": "go back",
+                "synonyms": [
+                  "go back to recommendations",
+                  "back to recommendations",
+                  "return to recommendations",
+                  "show recommendations",
+                  "show all picks",
+                  "back to list"
+                ]
+              }
+            },
+            {
+              "id": "OPEN_TRAILER",
+              "name": {
+                "value": "open trailer",
+                "synonyms": [
+                  "show trailer",
+                  "play trailer",
+                  "watch trailer"
+                ]
+              }
+            },
+            {
+              "id": "REMOVE_FROM_WATCHLIST",
+              "name": {
+                "value": "remove from watchlist",
+                "synonyms": [
+                  "remove this from watchlist",
+                  "remove it from watchlist",
+                  "delete from watchlist",
+                  "delete this from watchlist",
+                  "take off watchlist"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "dialog": {
+      "delegationStrategy": "SKILL_RESPONSE",
+      "intents": [
+        {
+          "name": "GetWeatherIntent",
+          "delegationStrategy": "ALWAYS",
+          "slots": [
+            {
+              "name": "Location",
+              "type": "AMAZON.City",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.GetWeatherIntent.Location"
+              }
+            }
+          ]
+        },
+        {
+          "name": "BoredomBusterIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
+          "slots": [
+            {
+              "name": "MediaType",
+              "type": "MediaType",
+              "confirmationRequired": false,
+              "elicitationRequired": false
+            },
+            {
+              "name": "MoodOrGenre",
+              "type": "AMAZON.SearchQuery",
+              "confirmationRequired": false,
+              "elicitationRequired": false
+            }
+          ]
+        }
+      ]
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Slot.GetWeatherIntent.Location",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Sure, what city do you want the weather for?"
+          },
+          {
+            "type": "PlainText",
+            "value": "Which city's weather would you like?"
+          },
+          {
+            "type": "PlainText",
+            "value": "What city should I check the weather for?"
+          }
+        ]
+      }
+    ]
+  }
+}

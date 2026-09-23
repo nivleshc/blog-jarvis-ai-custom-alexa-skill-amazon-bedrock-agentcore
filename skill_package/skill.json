@@ -1,0 +1,58 @@
+{
+  "manifest": {
+    "manifestVersion": "1.0",
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "name": "Jarvis AI",
+          "summary": "A voice assistant backed by Amazon Bedrock and Bedrock AgentCore.",
+          "description": "Ask general questions answered by an Amazon Nova model on Amazon Bedrock, get the weather, or ask Boredom Buster to recommend a movie or TV show -- with cover art and trailers shown on your Echo Show's screen. Access is restricted to users approved by the developer.",
+          "examplePhrases": [
+            "Alexa, open jarvis ai",
+            "Alexa, ask jarvis ai what is the capital of France",
+            "Alexa, tell jarvis ai I'm bored"
+          ],
+          "keywords": [
+            "AI",
+            "assistant",
+            "bedrock",
+            "nova"
+          ],
+          "smallIconUri": "https://echo-show-jarvis-ai-skill-icons-dev-1e43da24.s3.us-east-1.amazonaws.com/icons/skill-icon-small-108.png",
+          "largeIconUri": "https://echo-show-jarvis-ai-skill-icons-dev-1e43da24.s3.us-east-1.amazonaws.com/icons/skill-icon-large-512.png"
+        }
+      },
+      "isAvailableWorldwide": false,
+      "testingInstructions": "This skill enforces a per-user allowlist. Testers must be added via scripts/approve_user.py before they receive real responses -- see solution-design.md Section 10 for the beta rollout workflow.",
+      "category": "ORGANIZERS_AND_ASSISTANTS",
+      "distributionCountries": [
+        "US"
+      ]
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:919160726272:function:echo-show-jarvis-ai-dev"
+        },
+        "interfaces": [
+          {
+            "type": "ALEXA_PRESENTATION_APL"
+          }
+        ]
+      }
+    },
+    "permissions": [],
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "usesPersonalInfo": false,
+      "isChildDirected": false,
+      "isExportCompliant": true,
+      "containsAds": false,
+      "locales": {
+        "en-US": {
+          "privacyPolicyUrl": ""
+        }
+      }
+    }
+  }
+}

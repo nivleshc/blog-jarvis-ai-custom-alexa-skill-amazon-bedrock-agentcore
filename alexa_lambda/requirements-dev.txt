@@ -1,0 +1,6 @@
+# Test-only dependencies, not deployed to Lambda. Run the suite from the
+# project root with: pytest
+# (pytest.ini's testpaths covers both alexa_lambda/tests and
+# scripts/tests, so a single `pytest` invocation runs everything.)
+pytest==9.1.1
+moto==5.2.2

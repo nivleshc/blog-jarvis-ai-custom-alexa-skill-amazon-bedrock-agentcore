@@ -1,0 +1,11 @@
+# boto3/botocore are provided by the AWS Lambda Python runtime by default
+# and are intentionally NOT bundled into the deployment package -- this
+# file exists for local development and testing (pip install -r
+# requirements.txt), not for the archive_file that Terraform packages.
+#
+# Pinned to a recent version to ensure the `bedrock-agentcore` service
+# client used by router.py is available -- this is a newer AWS service
+# and older boto3/botocore releases predate it. If the Lambda runtime's
+# built-in boto3 is older than what's needed, a Lambda layer bundling a
+# newer boto3/botocore will be required.
+boto3==1.43.47
